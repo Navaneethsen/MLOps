@@ -4,7 +4,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: mlops-aml-vg
+  - group: mlops-aml-vg-SEN-B
 
 stages:
   - stage: CreateEnvironment
