@@ -15,7 +15,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy MLOps resources to Azure'
             inputs:
-              azureSubscription: 'AzureResourceManagerConnection'
+              azureSubscription: 'AzureResourceManagerConnection2'
               action: 'Create Or Update Resource Group'
               resourceGroupName: 'docs-aml'
               location: $(LOCATION)
@@ -32,13 +32,13 @@ stages:
           - task: AzureCLI@1
             displayName: 'Install the CLI'
             inputs:
-              azureSubscription: 'AzureResourceManagerConnection'
+              azureSubscription: 'AzureResourceManagerConnection2'
               scriptLocation: inlineScript
               inlineScript: 'az extension add -n azure-cli-ml'
 
           - task: AzureCLI@1
             displayName: 'Provision compute cluster for training'
             inputs:
-              azureSubscription: 'AzureResourceManagerConnection'
+              azureSubscription: 'AzureResourceManagerConnection2'
               scriptLocation: inlineScript
               inlineScript: 'az ml computetarget create amlcompute --max-nodes 3 --name $(COMPUTE_CLUSTER_NAME) --vm-size $(COMPUTE_CLUSTER_SKU) --resource-group $(BASE_NAME)-aml-rg --vm-priority dedicated --workspace-name $(BASE_NAME)-aml-ws --remote-login-port-public-access disabled'
