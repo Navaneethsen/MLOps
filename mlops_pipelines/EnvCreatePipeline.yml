@@ -17,7 +17,7 @@ stages:
             inputs:
               azureSubscription: 'AzureResourceManagerConnection'
               action: 'Create Or Update Resource Group'
-              resourceGroupName: '$(BASE_NAME)-aml-rg'
+              resourceGroupName: 'docs-aml'
               location: $(LOCATION)
               templateLocation: 'Linked artifact'
               csmFile: '$(Build.SourcesDirectory)/mlops_pipelines/arm-templates/EnvCreateARMTemplete.json'
