@@ -25,7 +25,7 @@ stages:
             inputs:
               azureSubscription: 'AzureResourceManagerConnection2'
               scriptLocation: inlineScript
-              inlineScript: 'az ml run submit-script --workspace-name $(BASE_NAME)-aml-ws --resource-group docs-aml -e $(MODEL_NAME)-experiment -d code/train/train_conda_env.yml --ct $(COMPUTE_CLUSTER_NAME) --source-directory code/train -t run.json train_model.py --MODEL_NAME $(MODEL_NAME) --DATASET_NAME $(DATASET_NAME)'
+              inlineScript: 'az ml run submit-script --workspace-name $(BASE_NAME)-aml-ws --resource-group $(BASE_NAME)-aml-rg -e $(MODEL_NAME)-experiment -d code/train/train_conda_env.yml --ct $(COMPUTE_CLUSTER_NAME) --source-directory code/train -t run.json train_model.py --MODEL_NAME $(MODEL_NAME) --DATASET_NAME $(DATASET_NAME)'
 
           - publish: $(System.DefaultWorkingDirectory)/run.json
             displayName: Publish run metadata artifact
@@ -59,7 +59,7 @@ stages:
             inputs:
               azureSubscription: 'AzureResourceManagerConnection2'
               scriptLocation: inlineScript
-              inlineScript: 'az ml model register --workspace-name $(BASE_NAME)-aml-ws --resource-group docs-aml -f $(Pipeline.Workspace)/run-metadata/run.json --asset-path outputs/$(MODEL_NAME) --experiment-name $(MODEL_NAME)-experiment -n $(MODEL_NAME) -t model.json'
+              inlineScript: 'az ml model register --workspace-name $(BASE_NAME)-aml-ws --resource-group $(BASE_NAME)-aml-rg -f $(Pipeline.Workspace)/run-metadata/run.json --asset-path outputs/$(MODEL_NAME) --experiment-name $(MODEL_NAME)-experiment -n $(MODEL_NAME) -t model.json'
 
           - publish: $(System.DefaultWorkingDirectory)/model.json
             displayName: Publish model metadata artifact
@@ -86,4 +86,4 @@ stages:
             inputs:
               azureSubscription: 'AzureResourceManagerConnection2'
               scriptLocation: inlineScript
-              inlineScript: 'az ml model deploy -n $(BASE_NAME)-aml-aci -f $(Pipeline.Workspace)/model-metadata/model.json --ic  $(Build.SourcesDirectory)/code/score/inferenceConfig.yml --dc  $(Build.SourcesDirectory)/code/score/deploymentConfig.yml --overwrite --workspace-name $(BASE_NAME)-aml-ws --resource-group docs-aml'
+              inlineScript: 'az ml model deploy -n $(BASE_NAME)-aml-aci -f $(Pipeline.Workspace)/model-metadata/model.json --ic  $(Build.SourcesDirectory)/code/score/inferenceConfig.yml --dc  $(Build.SourcesDirectory)/code/score/deploymentConfig.yml --overwrite --workspace-name $(BASE_NAME)-aml-ws --resource-group $(BASE_NAME)-aml-rg'
